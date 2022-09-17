@@ -19,8 +19,8 @@
 #
 FactoryBot.define do
   factory :article do
+    user
     title { "MyString" }
     body { "MyText" }
-    user { nil }
   end
 end
