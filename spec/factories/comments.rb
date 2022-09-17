@@ -21,8 +21,8 @@
 #
 FactoryBot.define do
   factory :comment do
+    user
     body { "MyText" }
-    user { nil }
-    article { nil }
+    article
   end
 end
