@@ -92,6 +92,6 @@ RSpec.configure do |config|
 
   # テスト失敗時に最後までテストを走らせる設定を記述
   config.define_derived_metadata do |meta|
-    meta[:aggregate_failures] = true unless meta.key?(:aggregate_failures)
+    meta[:aggregate_failures] = true unless meta.has_key?(:aggregate_failures)
   end
 end
