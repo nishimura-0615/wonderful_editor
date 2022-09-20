@@ -21,5 +21,22 @@
 require "rails_helper"
 
 RSpec.describe ArticleLike, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "いいねしていない記事にいいねをする時" do
+    let(:article_like) { build(:article_like) }
+    it "記事にいいねできる" do
+      expect(article_like).to be_valid
+    end
+  end
+
+  context "すでにいいねをしている記事にいいねをするとき" do
+    before { create(:article_like, user: user, article: article) }
+
+    let(:article_like) { build(:article_like, user: user, article: article) }
+    let(:user) { create(:user) }
+    let(:article) { create(:article) }
+
+    it "いいねに失敗する" do
+      expect(article_like).to be_invalid
+    end
+  end
 end
