@@ -1,12 +1,12 @@
 require "rails_helper"
 
-RSpec.describe "Api::V1::Article", type: :request do
+RSpec.describe "Api::V1::Articles", type: :request do
   describe "GET /articles" do
     subject { get(api_v1_articles_path) }
 
     before { create_list(:article, 3) }
 
-    it "記事の一覧が取得できる" do # rubocop:disable  RSpec/MultipleExpectations:
+    it "記事の一覧が取得できる" do
       subject
 
       res = JSON.parse(response.body)
