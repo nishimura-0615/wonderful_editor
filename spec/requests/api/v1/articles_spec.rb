@@ -1,22 +1,24 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::Articles", type: :request do
-  #  describe "GET /articles" do
-  #    subject { get(api_v1_articles_path) }
+  describe "GET /articles" do
+    subject { get(api_v1_articles_path) }
 
-  #    before { create_list(:article, 3) }
+    let!(:article1) { create(:article, updated_at: 1.days.ago) }
+    let!(:article2) { create(:article, updated_at: 2.days.ago) }
+    let!(:article3) { create(:article) }
 
-  #    it "記事の一覧が取得できる" do
-  #      subject
+    it "記事の一覧が取得できる" do
+      subject
+      res = JSON.parse(response.body)
 
-  #     res = JSON.parse(response.body)
-
-  #      expect(response).to have_http_status(:ok)
-  #      expect(res.length).to eq 3
-  #      expect(res[0].keys).to eq ["id", "title", "updated_at", "user"]
-  #      expect(res[0]["user"].keys).to eq ["id", "name", "email"]
-  #     end
-  #   end
+      expect(response).to have_http_status(:ok)
+      expect(res.length).to eq 3
+      expect(res.map {|d| d["id"] }).to eq [article1.id, article2.id, article3.id]
+      expect(res[0].keys).to eq ["id", "title", "updated_at", "user"]
+      expect(res[0]["user"].keys).to eq ["id", "name", "email"]
+    end
+  end
 
   describe "GET /articles/:id" do
     subject { get(api_v1_article_path(article_id)) }
@@ -44,6 +46,32 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
       it "記事が見つからない" do
         expect { subject }.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+
+    describe "POST /articles/" do
+      subject { post(api_v1_articles_path, params: params) }
+
+      context "ログインユーザーが適切なパラメーターを送信したとき" do
+        let(:current_user) { create(:user) }
+        let(:params) { { article: attributes_for(:article) } }
+        # この記述は後の実装で記述を修正する予定なので現状は rubocop:disable all で対応
+        before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) } # rubocop:disable all
+
+        it "記事のレコードが作成される" do
+          expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
+          res = JSON.parse(response.body)
+          expect(res["title"]).to eq params[:article][:title]
+          expect(res["body"]).to eq params[:article][:body]
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "ログインしていないユーザーがパラメーターを送信したとき" do
+        let(:params) { { article: attributes_for(:article) } }
+        it "エラーする" do
+          expect { subject }.to raise_error(NoMethodError)
+        end
       end
     end
   end
