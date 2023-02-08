@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::Articles", type: :request do
-  describe "GET api/v1/articles" do
+  describe "GET articles" do
     subject { get(api_v1_articles_path) }
 
     context "3つの記事を作成するとき" do
@@ -22,7 +22,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
   end
 
-  describe "GET api/v1/articles/:id" do
+  describe "GET articles/:id" do
     subject { get(api_v1_article_path(article_id)) }
 
     context "指定した id の記事が存在する場合" do
@@ -52,7 +52,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
   end
 
-  describe "POST api/v1/articles/" do
+  describe "POST articles/" do
     subject { post(api_v1_articles_path, params: params) }
 
     context "ログインユーザーが適切なパラメーターを送信したとき" do
