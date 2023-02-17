@@ -52,7 +52,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
   end
 
-  describe "POST articles/" do
+  describe "POST articles" do
     subject { post(api_v1_articles_path, params: params) }
 
     context "ログインユーザーが適切なパラメーターを送信したとき" do
@@ -74,6 +74,31 @@ RSpec.describe "Api::V1::Articles", type: :request do
       let(:params) { { article: attributes_for(:article) } }
       it "エラーする" do
         expect { subject }.to raise_error(NoMethodError)
+      end
+    end
+  end
+
+  describe "PATCH（PUT) /articles/:id" do
+    subject { patch(api_v1_article_path(article.id), params: params) }
+
+    let(:params) { { article: attributes_for(:article) } }
+    let(:current_user) { create(:user) }
+    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) } # rubocop:disable all
+
+    context "自分で作成している記事のレコードを更新をするとき" do
+      let(:article) { create(:article, user: current_user) }
+      it "記事を更新できる" do
+        expect { subject }.to change { article.reload.title }.from(article.title).to(params[:article][:title]) &
+                              change { article.reload.body }.from(article.body).to(params[:article][:body])
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "自分以外の人が作成している記事のレコードを更新をするとき" do
+      let(:other_user) { create(:user) }
+      let!(:article) { create(:article, user: other_user) }
+      it "更新できない" do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
