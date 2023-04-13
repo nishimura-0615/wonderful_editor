@@ -69,4 +69,9 @@ module.exports = function(api) {
       ]
     ].filter(Boolean)
   }
+
+  plugins: [
+    // ...
+    '@babel/plugin-proposal-class-properties',
+   ]
 }
