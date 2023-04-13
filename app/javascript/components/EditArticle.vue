@@ -26,69 +26,69 @@ import Router from "../router/router";
 import marked from "marked";
 import hljs from "highlight.js";
 
-  const headers = {
-    headers: {
-      access_token: localStorage.getItem("access-token"),
-      client: localStorage.getItem("client"),
-      uid: localStorage.getItem("uid")
+const headers = {
+  headers: {
+    access_token: localStorage.getItem("access-token"),
+    client: localStorage.getItem("client"),
+    uid: localStorage.getItem("uid")
+  }
+};
+
+export default {
+  data() {
+    return {
+      title: "",
+      body: "",
     }
-  };
+  },
 
-  export default {
-    data() {
-      return {
-        title: "",
-        body: "",
+  async created(){
+    const renderer = new marked.Renderer();
+    let data = "";
+    renderer.code = function(code, lang) {
+      const _lang = lang.split(".").pop();
+      try {
+        data = hljs.highlight(_lang, code, true).value;
+      } catch (e) {
+        data = hljs.highlightAuto(code).value;
       }
-    },
+      return `<pre><code class="hljs"> ${data} </code></pre>`;
+    };
 
-    async created(){
-      const renderer = new marked.Renderer();
-      let data = "";
-      renderer.code = function(code, lang) {
-        const _lang = lang.split(".").pop();
-        try {
-          data = hljs.highlight(_lang, code, true).value;
-        } catch (e) {
-          data = hljs.highlightAuto(code).value;
-        }
-        return `<pre><code class="hljs"> ${data} </code></pre>`;
+    marked.setOptions({
+      renderer: renderer,
+      tables: true,
+      sanitize: true,
+      langPrefix: ""
+    });
+  },
+
+  computed: {
+    compiledMarkdown() {
+      return function(text) {
+        return marked(text);
       };
+    }
+  },
 
-      marked.setOptions({
-        renderer: renderer,
-        tables: true,
-        sanitize: true,
-        langPrefix: ""
-      });
-    },
-
-    computed: {
-      compiledMarkdown() {
-        return function(text) {
-          return marked(text);
-        };
-      }
-    },
-
-    methods: {
-      async createArticle() {
-        const params = {
-          title: this.title,
-          body: this.body
-        };
-        await axios
-          .post("/api/v1/articles", params, headers)
-          .then(_response => {
-            Router.push("/");
-          })
-          .catch(e => {
-            // TODO: 適切な Error 表示
-            alert(e.response.data.errors);
-          });
-      }
+  methods: {
+    async createArticle() {
+      const params = {
+        title: this.title,
+        body: this.body
+      };
+      await axios
+        .post("/api/v1/articles", params, headers)
+        .then(_response => {
+          Router.push("/");
+        })
+        .catch(e => {
+          // TODO: 適切な Error 表示
+          alert(e.response.data.errors);
+        });
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
