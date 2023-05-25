@@ -106,7 +106,6 @@ RSpec.describe "Api::V1::Articles", type: :request do
   describe "DELETE /articles/:id" do
     subject { delete(api_v1_article_path(article_id), headers: headers) }
 
-    # devise_token_auth の導入が完了後に削除
     let(:current_user) { create(:user) }
     let(:article_id) { article.id }
     let(:headers) { current_user.create_new_auth_token }
