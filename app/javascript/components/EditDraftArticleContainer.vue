@@ -12,7 +12,7 @@
         placeholder="Markdown で記述することができます"
         class="body-form"
       ></v-textarea>
-      <div v-html="compiledMarkdown(this.body)" class="preview">a</div>
+      <div v-html="compiledMarkdown(this.body)" class="preview"></div>
     </div>
     <div class="create_btn_area">
       <v-btn
@@ -129,7 +129,7 @@ export default {
 
     async fetchArticle(id) {
       await axios
-        .get(`/api/v1/articles/${id}`)
+        .get(`/api/v1/articles/drafts/${id}`, headers)
         .then(response => {
           this.id = response.data.id;
           this.title = response.data.title;
