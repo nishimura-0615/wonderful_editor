@@ -1,24 +1,28 @@
 # README
+## タイトル
+### Wonderful Editor
+ 『Qlita風記事作成アプリ』
+スクリーンショット 2023-06-12 18.36.13.png
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 概要
+記事を記録、共有するためのアプリ
 
-Things you may want to cover:
+## URL・テストアカウント
+- ゲストログイン用パスワード
+- ユーザー名:ゲスト
+- email:guesgues@example.com
+- パスワード:guest1
 
-* Ruby version
+## 使用言語・ツール
+- Ruby: 2.7.2
+- Rails: 6.0.6.1
+- Vue:2.6.1
+- DB:postgres
+- Docker/Docker-compose
+- Rspec
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 制作の意図
+「実務を見据えたスキルを学習」を目的として制作しました。 転職前に、「実務で見やすいドキュメントの作り方」「わからないことを調べる力」
+「適切な質問ができる力」これらの自走力を磨くために注力していきました。 具体的には「学習段階では知らない概念や言葉が含まれているような指示を
+もとに、アプリを作る経験」がそれにあたります。基礎的な学習をした上で実務で知らないことがでてきた時にどうやって問題解決できるか。
+このポートフォリオ作成を通してその練習をしました。 また、このポートフォリオは私が実際に作って世に出したいというようなアプリとは考えていません。そのようなアプリは実務を通してスキルアップを図りながら作った方がより深い学習にもなると考えているからです。 ここまでやってきたことはあくまでも「「実務を見据えた学習」」であり、今回のポートフォリオもその一環です。
