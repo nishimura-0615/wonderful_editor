@@ -297,6 +297,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-darwin-22
   x86_64-linux
 
 DEPENDENCIES
@@ -319,6 +320,7 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails
   rubocop-rspec
+  ruby-graphviz
   sass-rails (>= 6)
   spring
   spring-watcher-listen (~> 2.0.0)
